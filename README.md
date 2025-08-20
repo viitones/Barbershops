@@ -1,3 +1,11 @@
+# First
+
+- [x]  Setup do banco
+- []  Seeding do banco
+- []  Tailwind e Shadcn
+- []  Git Hooks
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
