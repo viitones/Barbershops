@@ -5,5 +5,8 @@
 - [x] Tailwind e Shadcn
 - [] Git Hooks
 
-npm i -D husky lint-staged
-npx husky init
+npm i -D prisma
+npx prisma init --datasource-provider postgresql
+npm i -D tsx
+npx prisma migrate dev --name init-db
+npx prisma db seed
