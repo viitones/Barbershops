@@ -1,12 +1,12 @@
-import { EyeIcon, FootprintsIcon, SearchIcon } from "lucide-react"
+import { SearchIcon } from "lucide-react"
 import Image from "next/image"
 import { BarbershopItem } from "./_components/barbershop-item"
+import { BookingItem } from "./_components/booking-item"
 import { Header } from "./_components/header"
-import { Avatar, AvatarImage } from "./_components/ui/avatar"
-import { Badge } from "./_components/ui/badge"
 import { Button } from "./_components/ui/button"
 import { Card, CardContent } from "./_components/ui/card"
 import { Input } from "./_components/ui/input"
+import { quickSearchOptions } from "./_constants/quicksearch-options"
 import { db } from "./_lib/prisma"
 
 export default async function Home() {
@@ -32,35 +32,21 @@ export default async function Home() {
         </div>
 
         <div className="mt-6 flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
-          <Button variant={"secondary"} className="gap-2 cursor-pointer">
-            <Image src="/cabelo.svg" width={16} height={16} alt="Cabelo" />
-            Cabelo
-          </Button>
-
-          <Button variant={"secondary"} className="gap-2 cursor-pointer">
-            <Image src="/barba.svg" width={16} height={16} alt="Barba" />
-            Barba
-          </Button>
-
-          <Button variant={"secondary"} className="gap-2 cursor-pointer">
-            <Image
-              src="/acabamento.svg"
-              width={16}
-              height={16}
-              alt="Acabamento"
-            />
-            Acabamento
-          </Button>
-
-          <Button variant={"secondary"} className="gap-2 cursor-pointer">
-            <FootprintsIcon size={16} />
-            Pézinho
-          </Button>
-
-          <Button variant={"secondary"} className="gap-2 cursor-pointer">
-            <EyeIcon size={16} />
-            Sobrancelha
-          </Button>
+          {quickSearchOptions.map((option) => (
+            <Button
+              key={option.title}
+              variant={"secondary"}
+              className="cursor-pointer gap-2"
+            >
+              <Image
+                src={option.imageUrl}
+                width={16}
+                height={16}
+                alt={option.title}
+              />
+              {option.title}
+            </Button>
+          ))}
         </div>
 
         <div className="relative mt-6 h-[150px] w-full">
@@ -72,30 +58,8 @@ export default async function Home() {
           />
         </div>
 
-        <h2 className="mt-6 mb-6 text-xs font-bold text-gray-400 uppercase">
-          Agendamentos
-        </h2>
-
-        <Card className="p-0">
-          <CardContent className="flex justify-between p-0">
-            <div className="flex flex-col gap-2 py-5 pl-5">
-              <Badge className="w-fit">Confirmado</Badge>
-              <h3>Corte de cabelo</h3>
-              <div className="flex items-center gap-2">
-                <Avatar className="h-6 w-6">
-                  <AvatarImage src="https://github.com/viitones.png" />
-                </Avatar>
-                <p className="text-sm">Barbearia FSW</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center justify-center border-l-2 border-solid px-5">
-              <p className="text-sm">Agosto</p>
-              <p className="text-2xl">20</p>
-              <p className="text-sm">10:00</p>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Agendamentos  */}
+        <BookingItem />
 
         <h2 className="mt-6 mb-6 text-xs font-bold text-gray-400 uppercase">
           Agendamentos
