@@ -5,6 +5,7 @@ import { ChevronLeft, MapPinIcon, MenuIcon, StarIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { PhoneItem } from "../../../../phone-item"
 
 interface BarbershopPageProps {
   params: Promise<{ id: string }>
@@ -56,6 +57,7 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
         </Button>
       </div>
 
+      {/* titulo */}
       <div className="border-b border-solid p-5">
         <h1 className="mb-3 text-xl font-bold">{barbershop?.name}</h1>
         <div className="mb-2 flex items-center gap-1">
@@ -78,7 +80,8 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
         <p className="text-justify text-sm">{barbershop?.description}</p>
       </div>
 
-      <div className="p-5 space-y-3">
+      {/* serviços */}
+      <div className="space-y-3 border-b border-solid p-5">
         <h2 className="text-xs font-black text-gray-400 uppercase">Serviços</h2>
 
         <div className="space-y-3">
@@ -86,6 +89,13 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
             <ServiceItem key={service.id} service={service} />
           ))}
         </div>
+      </div>
+
+      {/* contato */}
+      <div className="space-y-3 p-5">
+        {barbershop.phones.map((phone) => (
+          <PhoneItem key={phone} phone={phone} />
+        ))}
       </div>
     </div>
   )
