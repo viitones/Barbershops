@@ -5,7 +5,7 @@ import { Card, CardContent } from "./ui/card"
 
 export function Header() {
   return (
-    <Card>
+    <Card className="rounded-none">
       <CardContent className="flex flex-row items-center justify-between p-5">
         <Image src="/logo.png" alt="FSW Barber" height={18} width={120} />
         <Button size="icon" variant="outline">
