@@ -6,6 +6,7 @@ import { Search } from "./_components/search"
 import { Button } from "./_components/ui/button"
 import { quickSearchOptions } from "./_constants/quicksearch-options"
 import { db } from "./_lib/prisma"
+import Link from "next/link"
 
 export default async function Home() {
   const barbershops = await db.barbershop.findMany({})
@@ -32,14 +33,17 @@ export default async function Home() {
               key={option.title}
               variant={"secondary"}
               className="cursor-pointer gap-2"
+              asChild
             >
-              <Image
-                src={option.imageUrl}
-                width={16}
-                height={16}
-                alt={option.title}
-              />
-              {option.title}
+              <Link href={`/barbershops?service=${option.title}`}>
+                <Image
+                  src={option.imageUrl}
+                  width={16}
+                  height={16}
+                  alt={option.title}
+                />
+                {option.title}
+              </Link>
             </Button>
           ))}
         </div>

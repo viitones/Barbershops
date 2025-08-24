@@ -34,7 +34,6 @@ export function SidebarSheet() {
       </SheetHeader>
 
       <div className="flex items-center gap-3 border-b border-solid px-2 pb-5">
-
         {!session?.user && (
           <>
             <h2 className="text-lg font-bold">Olá, faça seu login!</h2>
@@ -105,19 +104,33 @@ export function SidebarSheet() {
 
       <div className="flex flex-col gap-4 border-b border-solid px-2 py-5">
         {quickSearchOptions.map((opt) => (
-          <Button
-            key={opt.title}
-            variant="ghost"
-            className="justify-start gap-2"
-          >
-            <Image src={opt.imageUrl} alt={opt.title} width={18} height={18} />
-            {opt.title}
-          </Button>
+          <SheetClose key={opt.title} asChild>
+            <Button
+              key={opt.title}
+              variant="ghost"
+              className="justify-start gap-2"
+              asChild
+            >
+              <Link href={`/barbershops?service=${opt.title}`}>
+                <Image
+                  src={opt.imageUrl}
+                  alt={opt.title}
+                  width={18}
+                  height={18}
+                />
+                {opt.title}
+              </Link>
+            </Button>
+          </SheetClose>
         ))}
       </div>
 
       <div className="flex flex-col gap-4 border-b border-solid px-2 py-5">
-        <Button onClick={handleLogout} variant="ghost" className="justify-start gap-2">
+        <Button
+          onClick={handleLogout}
+          variant="ghost"
+          className="justify-start gap-2"
+        >
           <LogOutIcon size={18} />
           Sair da conta
         </Button>
