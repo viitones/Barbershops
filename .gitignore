@@ -2,6 +2,7 @@
 .postgres-data
 # dependencies
 /node_modules
+.vscode
 /.pnp
 .pnp.*
 .yarn/*

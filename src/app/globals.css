@@ -117,7 +117,10 @@
   * {
     @apply border-border antialiased;
   }
+  html {
+    @apply h-dvh;
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground h-dvh;
   }
 }
