@@ -25,19 +25,22 @@ export default async function BarbershopsPage({
             }
           : {},
         searchParams?.service
-        ? {
-          services: {
-            some: {
-              name: {
-                contains: searchParams?.service,
-                mode: "insensitive",
+          ? {
+              services: {
+                some: {
+                  name: {
+                    contains: searchParams?.service,
+                    mode: "insensitive",
+                  },
+                },
               },
-            },
-          },
-        } : {},
+            }
+          : {},
       ],
     },
   })
+
+ 
 
   return (
     <div className="">
@@ -48,8 +51,8 @@ export default async function BarbershopsPage({
 
       <div className="px-5">
         <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
-          Resultados para &quot;{searchParams?.title || searchParams?.service}&quot; (Total:{" "}
-          {barbershops.length})
+          Resultados para &quot;{searchParams?.title || searchParams?.service}
+          &quot; (Total: {barbershops.length})
         </h2>
         <div className="grid grid-cols-2 gap-4">
           {barbershops.map((barbershop) => (
