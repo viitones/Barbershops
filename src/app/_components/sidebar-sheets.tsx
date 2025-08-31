@@ -1,27 +1,18 @@
 "use client"
 
-import { DialogDescription } from "@radix-ui/react-dialog"
 import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon } from "lucide-react"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
 import { quickSearchOptions } from "../_constants/quicksearch-options"
+import { SignInDialog } from "./sign-in-dialog"
 import { Avatar, AvatarImage } from "./ui/avatar"
 import { Button } from "./ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog"
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog"
 import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet"
 
 export function SidebarSheet() {
   const { data: session } = useSession()
-  function handleLoginWithGoogle() {
-    signIn("google")
-  }
 
   function handleLogout() {
     signOut()
@@ -46,28 +37,7 @@ export function SidebarSheet() {
               </DialogTrigger>
 
               <DialogContent className="w-[90%]">
-                <DialogHeader>
-                  <DialogTitle className="mb-2 text-center">
-                    Faça login na plataforma
-                  </DialogTitle>
-                  <DialogDescription className="flex flex-col items-center">
-                    <span>Conecte-se usando sua conta do Google</span>
-                  </DialogDescription>
-                </DialogHeader>
-
-                <Button
-                  onClick={handleLoginWithGoogle}
-                  variant={"outline"}
-                  className="mt-4 gap-1 font-bold"
-                >
-                  <Image
-                    src="/google.svg"
-                    alt="Google"
-                    width={18}
-                    height={18}
-                  />
-                  Google
-                </Button>
+                <SignInDialog />
               </DialogContent>
             </Dialog>
           </>
@@ -125,16 +95,18 @@ export function SidebarSheet() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-4 border-b border-solid px-2 py-5">
-        <Button
-          onClick={handleLogout}
-          variant="ghost"
-          className="justify-start gap-2"
-        >
-          <LogOutIcon size={18} />
-          Sair da conta
-        </Button>
-      </div>
+      {session?.user && (
+        <div className="flex flex-col gap-4 border-b border-solid px-2 py-5">
+          <Button
+            onClick={handleLogout}
+            variant="ghost"
+            className="justify-start gap-2"
+          >
+            <LogOutIcon size={18} />
+            Sair da conta
+          </Button>
+        </div>
+      )}
     </SheetContent>
   )
 }
