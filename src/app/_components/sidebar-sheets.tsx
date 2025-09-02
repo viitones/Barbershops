@@ -66,9 +66,11 @@ export function SidebarSheet() {
             </Link>
           </Button>
         </SheetClose>
-        <Button variant="ghost" className="justify-start gap-2">
-          <CalendarIcon size={18} />
-          Agendamentos
+        <Button variant="ghost" className="justify-start gap-2" asChild>
+          <Link href="/bookings">
+            <CalendarIcon size={18} />
+            Agendamentos
+          </Link>
         </Button>
       </div>
 
