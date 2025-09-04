@@ -37,8 +37,8 @@ export default async function Home() {
           },
         },
         orderBy: {
-          date: "asc"
-        }
+          date: "asc",
+        },
       })
     : []
 
@@ -84,9 +84,11 @@ export default async function Home() {
         </div>
 
         {/* Agendamentos  */}
-        <h2 className="mt-6 mb-6 text-xs font-bold text-gray-400 uppercase">
-          Agendamentos
-        </h2>
+        {session?.user && (
+          <h2 className="mt-6 mb-6 text-xs font-bold text-gray-400 uppercase">
+            Agendamentos
+          </h2>
+        )}
         <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
           {confirmedBookings.map((booking) => (
             <BookingItem key={booking.id} booking={booking} />
