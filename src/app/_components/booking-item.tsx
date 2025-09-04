@@ -1,18 +1,36 @@
+'use client'
+
 import { Prisma } from "@/generated/prisma"
+import { DialogClose } from "@radix-ui/react-dialog"
 import { format, formatDate, isFuture } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import Image from "next/image"
 import { PhoneItem } from "../../../phone-item"
 import { Avatar, AvatarImage } from "./ui/avatar"
 import { Badge } from "./ui/badge"
+import { Button } from "./ui/button"
 import { Card, CardContent } from "./ui/card"
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog"
+import {
   Sheet,
+  SheetClose,
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet"
+import { deleteBooking } from "../_actions/delete-booking"
+import { toast } from "sonner"
+import { useState } from "react"
 
 // receber agendamento como prop
 interface BookingItemProps {
@@ -22,14 +40,31 @@ interface BookingItemProps {
 }
 
 export function BookingItem({ booking }: BookingItemProps) {
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
+
   const {
     service: { barbershop },
   } = booking
 
   const isConfirmed = isFuture(booking.date)
 
+
+  function handleCancelBooking() {
+    try {
+      deleteBooking(booking.id)
+      setIsSheetOpen(false)
+      toast.success("Agendamento cancelado com sucesso")
+    } catch (error) {
+      toast.error("Erro ao cancelar agendamento")
+    }
+  }
+
+  function handleSheetOpenChange(isOpen: boolean) {
+    setIsSheetOpen(isOpen)
+  }
+
   return (
-    <Sheet>
+    <Sheet open={isSheetOpen} onOpenChange={handleSheetOpenChange}>
       <SheetTrigger className="min-w-[90%] p-0">
         <Card className="w-full">
           <CardContent className="flex justify-between p-0">
@@ -63,7 +98,7 @@ export function BookingItem({ booking }: BookingItemProps) {
           </CardContent>
         </Card>
       </SheetTrigger>
-      <SheetContent className="w-[90%] p-4">
+      <SheetContent className="w-[85%] p-4">
         <SheetHeader className="border-b">
           <SheetTitle className="text-left">Detalhes do Agendamento</SheetTitle>
         </SheetHeader>
@@ -139,6 +174,45 @@ export function BookingItem({ booking }: BookingItemProps) {
             ))}
           </div>
         </div>
+        <SheetFooter className="mt-6">
+          <div className="flex items-center gap-3">
+            <SheetClose asChild>
+              <Button className="w-1/2" variant={"outline"}>
+                Voltar
+              </Button>
+            </SheetClose>
+            {isConfirmed && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-1/2" variant={"destructive"}>
+                    Cancelar
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[90%]">
+                  <DialogHeader>
+                    <DialogTitle>
+                      Você tem certeza que deseja cancelar?
+                    </DialogTitle>
+                    <DialogDescription>
+                      Esta ação não pode ser desfeita. Isso cancelará
+                      permanentemente seu agendamento.
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <DialogFooter className="flex flex-row gap-3">
+                    <DialogClose asChild>
+                      <Button variant="outline" className="w-1/2">Voltar</Button>
+                    </DialogClose>
+
+                    <DialogClose asChild>
+                      <Button onClick={handleCancelBooking} variant="destructive" className="w-1/2">Sim, cancelar</Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            )}
+          </div>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   )
