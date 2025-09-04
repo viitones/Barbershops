@@ -1,6 +1,6 @@
 "use client"
 
-import { Barbershop, BarbershopService, Booking } from "@/generated/prisma"
+import { Barbershop, BarbershopService, Booking } from "@/src/generated/prisma"
 import { format, isPast, isToday, set } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { useSession } from "next-auth/react"

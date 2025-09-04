@@ -1,4 +1,4 @@
-import { Barbershop } from "@/generated/prisma"
+import { Barbershop } from "@/src/generated/prisma"
 import { StarIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"

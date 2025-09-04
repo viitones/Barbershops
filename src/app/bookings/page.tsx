@@ -1,4 +1,4 @@
-import { Header } from "@/app/_components/header"
+import { Header } from "@/src/app/_components/header"
 import { getServerSession } from "next-auth"
 import { notFound } from "next/navigation"
 import { BookingItem } from "../_components/booking-item"

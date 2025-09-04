@@ -13,3 +13,5 @@ npx prisma db seed
 
 npm install next-auth
 npm install @prisma/client @auth/prisma-adapter
+
+npx prisma migrate deploy

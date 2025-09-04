@@ -1,11 +1,10 @@
 'use client'
 
-import { Prisma } from "@/generated/prisma"
-import { DialogClose } from "@radix-ui/react-dialog"
+import { Prisma } from "@/src/generated/prisma"
+import { DialogClose } from "./ui/dialog"
 import { format, formatDate, isFuture } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import Image from "next/image"
-import { PhoneItem } from "../../../phone-item"
 import { Avatar, AvatarImage } from "./ui/avatar"
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
@@ -31,6 +30,7 @@ import {
 import { deleteBooking } from "../_actions/delete-booking"
 import { toast } from "sonner"
 import { useState } from "react"
+import { PhoneItem } from "./phone-item"
 
 // receber agendamento como prop
 interface BookingItemProps {

@@ -1,13 +1,13 @@
-import { ServiceItem } from "@/app/_components/service-item"
-import { SidebarSheet } from "@/app/_components/sidebar-sheets"
-import { Button } from "@/app/_components/ui/button"
-import { Sheet, SheetTrigger } from "@/app/_components/ui/sheet"
-import { db } from "@/app/_lib/prisma"
+import { ServiceItem } from "@/src/app/_components/service-item"
+import { SidebarSheet } from "@/src/app/_components/sidebar-sheets"
+import { Button } from "@/src/app/_components/ui/button"
+import { Sheet, SheetTrigger } from "@/src/app/_components/ui/sheet"
+import { db } from "@/src/app/_lib/prisma"
 import { ChevronLeft, MapPinIcon, MenuIcon, StarIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { PhoneItem } from "../../../../phone-item"
+import { PhoneItem } from "../../_components/phone-item"
 
 interface BarbershopPageProps {
   params: Promise<{ id: string }>
