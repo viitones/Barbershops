@@ -1,11 +1,11 @@
 "use client"
 
 import { Barbershop, BarbershopService, Booking } from "@/generated/prisma"
-import { format, set } from "date-fns"
+import { format, isPast, isToday, set } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 import { createBooking } from "../_actions/create-booking"
 import { GetBookings } from "../_actions/get-bookings"
@@ -41,18 +41,36 @@ const TIME_LIST = [
   "18:00",
 ]
 
-function getTimeList(bookings: Booking[] | undefined) {
-  if (!bookings) return TIME_LIST
+interface GetTimeListProps {
+  bookings: Booking[] | undefined
+  selectedDay: Date
+}
 
-  const bookedTimes = bookings.map((booking) =>
-    format(booking.date, "HH:mm", { locale: ptBR }),
-  )
+function getTimeList({ bookings, selectedDay }: GetTimeListProps) {
+  return TIME_LIST.filter((time) => {
+    const hour = Number(time.split(":")[0])
+    const minute = Number(time.split(":")[1])
 
-  const hasBookingOnCurrentTime = TIME_LIST.filter(
-    (time) => !bookedTimes.includes(time),
-  )
+    if (!bookings) {
+      return
+    }
 
-  return hasBookingOnCurrentTime
+    const timeIsOnThePast = isPast(set(new Date(), { hours: hour, minutes: minute }))
+    if (timeIsOnThePast && isToday(selectedDay)) {
+      return false
+    }
+
+    const hasbookingOnCurrentTime = bookings.some(
+      (booking) =>
+        booking.date.getHours() === hour &&
+        booking.date.getMinutes() === minute,
+    )
+
+    if (hasbookingOnCurrentTime) {
+      return false
+    }
+    return true
+  })
 }
 
 export function ServiceItem({ service, barbershop }: ServiceItemProps) {
@@ -129,6 +147,14 @@ export function ServiceItem({ service, barbershop }: ServiceItemProps) {
 
     setBookingSheetIsOpen(true)
   }
+
+  const timeList = useMemo(() => {
+    if (!selectedDay) return []
+    return getTimeList({
+      bookings: dayBookings,
+      selectedDay,
+    })
+  }, [dayBookings, selectedDay])
 
   return (
     <>
@@ -209,8 +235,8 @@ export function ServiceItem({ service, barbershop }: ServiceItemProps) {
                   </div>
 
                   <div className="grid w-fit grid-cols-3 gap-3 self-center overflow-x-auto p-5 px-5 [&::-webkit-scrollbar]:hidden">
-                    {selectedDay &&
-                      getTimeList(dayBookings).map((time) => (
+                    {timeList.length > 0 ? (
+                      timeList.map((time) => (
                         <Button
                           key={time}
                           variant={
@@ -221,7 +247,12 @@ export function ServiceItem({ service, barbershop }: ServiceItemProps) {
                         >
                           {time}
                         </Button>
-                      ))}
+                      ))
+                    ) : (
+                      <p className="text-xs">
+                        Nenhum horário disponível neste dia.
+                      </p>
+                    )}
                   </div>
 
                   {selectedTime && selectedDay && (
