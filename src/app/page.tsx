@@ -9,6 +9,8 @@ import { Button } from "./_components/ui/button"
 import { quickSearchOptions } from "./_constants/quicksearch-options"
 import { authOptions } from "./_lib/auth"
 import { db } from "./_lib/prisma"
+import { format } from "date-fns"
+import { ptBR } from "date-fns/locale"
 
 export default async function Home() {
   const session = await getServerSession(authOptions)
@@ -46,8 +48,8 @@ export default async function Home() {
     <div>
       <Header />
       <div className="p-5">
-        <h2 className="text-xl font-bold">Olá, Victor</h2>
-        <p>Segunda-feira, 20 de agosto</p>
+        <h2 className="text-xl font-bold">Olá, {session?.user ? session?.user?.name?.split(" ")[0] : "visitante"}</h2>
+        <p>{format(new Date(), "EEEE, dd 'de' MMMM", { locale: ptBR })}</p>
 
         <div className="mt-6">
           <Search />
