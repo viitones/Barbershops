@@ -22,6 +22,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "./ui/sheet"
+import { useRouter } from "next/navigation"
 
 interface ServiceItemProps {
   service: BarbershopService
@@ -77,6 +78,8 @@ function getTimeList({ bookings, selectedDay }: GetTimeListProps) {
 }
 
 export function ServiceItem({ service, barbershop }: ServiceItemProps) {
+  const router = useRouter()
+
   const { data } = useSession()
 
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined)
@@ -136,7 +139,12 @@ export function ServiceItem({ service, barbershop }: ServiceItemProps) {
       })
       handleBookingSheetOpenChange()
 
-      toast.success("Reserva criada com sucesso!")
+      toast.success("Reserva criada com sucesso!", {
+        action: {
+          label: "Ver minhas reservas",
+          onClick: () => router.push("/bookings"),
+        }
+      })
     } catch (error) {
       console.log(error)
 
