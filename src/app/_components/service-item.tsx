@@ -1,7 +1,7 @@
 "use client"
 
 import { Barbershop, BarbershopService, Booking } from "@/src/generated/prisma"
-import { format, isPast, isToday, set } from "date-fns"
+import { isPast, isToday, set } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 import { createBooking } from "../_actions/create-booking"
 import { GetBookings } from "../_actions/get-bookings"
+import { BookingSummary } from "./booking-summary"
 import { SignInDialog } from "./sign-in-dialog"
 import { Button } from "./ui/button"
 import { Calendar } from "./ui/calendar"
@@ -55,7 +56,9 @@ function getTimeList({ bookings, selectedDay }: GetTimeListProps) {
       return
     }
 
-    const timeIsOnThePast = isPast(set(new Date(), { hours: hour, minutes: minute }))
+    const timeIsOnThePast = isPast(
+      set(new Date(), { hours: hour, minutes: minute }),
+    )
     if (timeIsOnThePast && isToday(selectedDay)) {
       return false
     }
@@ -100,6 +103,14 @@ export function ServiceItem({ service, barbershop }: ServiceItemProps) {
     fetch()
   }, [selectedDay, service.id])
 
+  const selectedDate = useMemo(() => {
+    if (!selectedDay || !selectedTime) return
+    return set(selectedDay, {
+      hours: Number(selectedTime.split(":")[0]),
+      minutes: Number(selectedTime.split(":")[1]),
+    })
+  }, [selectedDay, selectedTime])
+
   function handleBookingSheetOpenChange() {
     setSelectedDay(undefined)
     setSelectedTime(undefined)
@@ -117,18 +128,11 @@ export function ServiceItem({ service, barbershop }: ServiceItemProps) {
 
   async function handleCreateBooking() {
     try {
-      if (!selectedDay || !selectedTime) return
-
-      const hour = Number(selectedTime?.split(":")[0])
-      const minute = Number(selectedTime?.split(":")[1])
-      const newDate = set(selectedDay, {
-        hours: hour,
-        minutes: minute,
-      })
+      if (!selectedDate) return
 
       await createBooking({
         serviceId: service.id,
-        date: newDate,
+        date: selectedDate,
       })
       handleBookingSheetOpenChange()
 
@@ -255,50 +259,13 @@ export function ServiceItem({ service, barbershop }: ServiceItemProps) {
                     )}
                   </div>
 
-                  {selectedTime && selectedDay && (
+                  {selectedDate && (
                     <div className="p-5">
-                      <Card className="p-0">
-                        <CardContent className="space-y-3 p-3">
-                          <div className="flex items-center justify-between">
-                            <h2 className="font-bold">{service.name}</h2>
-                            <p className="text-sm font-bold text-gray-400">
-                              {Intl.NumberFormat("pt-BR", {
-                                style: "currency",
-                                currency: "BRL",
-                              }).format(Number(service.priceInCents) / 100)}
-                            </p>
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <h2 className="text-sm font-bold text-gray-400">
-                              Data
-                            </h2>
-                            <p className="text-sm text-gray-400">
-                              {format(selectedDay, "dd 'de' MMMM 'de' yyyy", {
-                                locale: ptBR,
-                              })}
-                            </p>
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <h2 className="text-sm font-bold text-gray-400">
-                              Horário
-                            </h2>
-                            <p className="text-sm text-gray-400">
-                              {selectedTime}
-                            </p>
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <h2 className="text-sm font-bold text-gray-400">
-                              Barbearia
-                            </h2>
-                            <p className="text-sm text-gray-400">
-                              {barbershop.name}
-                            </p>
-                          </div>
-                        </CardContent>
-                      </Card>
+                      <BookingSummary
+                        barbershop={barbershop}
+                        service={service}
+                        selectedDate={selectedDate}
+                      />
                     </div>
                   )}
                   {selectedTime && selectedDay && (

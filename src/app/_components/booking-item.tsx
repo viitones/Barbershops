@@ -1,16 +1,21 @@
-'use client'
+"use client"
 
 import { Prisma } from "@/src/generated/prisma"
-import { DialogClose } from "./ui/dialog"
-import { format, formatDate, isFuture } from "date-fns"
+import { formatDate, isFuture } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import Image from "next/image"
+import { useState } from "react"
+import { toast } from "sonner"
+import { deleteBooking } from "../_actions/delete-booking"
+import { BookingSummary } from "./booking-summary"
+import { PhoneItem } from "./phone-item"
 import { Avatar, AvatarImage } from "./ui/avatar"
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
 import { Card, CardContent } from "./ui/card"
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -27,10 +32,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet"
-import { deleteBooking } from "../_actions/delete-booking"
-import { toast } from "sonner"
-import { useState } from "react"
-import { PhoneItem } from "./phone-item"
 
 // receber agendamento como prop
 interface BookingItemProps {
@@ -47,7 +48,6 @@ export function BookingItem({ booking }: BookingItemProps) {
   } = booking
 
   const isConfirmed = isFuture(booking.date)
-
 
   function handleCancelBooking() {
     try {
@@ -133,40 +133,13 @@ export function BookingItem({ booking }: BookingItemProps) {
             {isConfirmed ? "Confirmado" : "Finalizado"}
           </Badge>
 
-          <Card className="mt-3 mb-6 p-0">
-            <CardContent className="space-y-3 p-3">
-              <div className="flex items-center justify-between">
-                <h2 className="font-bold">{booking.service.name}</h2>
-                <p className="text-sm font-bold text-gray-400">
-                  {Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(Number(booking.service.priceInCents) / 100)}
-                </p>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-bold text-gray-400">Data</h2>
-                <p className="text-sm text-gray-400">
-                  {format(booking.date, "dd 'de' MMMM 'de' yyyy", {
-                    locale: ptBR,
-                  })}
-                </p>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-bold text-gray-400">Horário</h2>
-                <p className="text-sm text-gray-400">
-                  {format(booking.date, "HH:mm", { locale: ptBR })}
-                </p>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-bold text-gray-400">Barbearia</h2>
-                <p className="text-sm text-gray-400">{barbershop.name}</p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="mb-3 mt-6">
+            <BookingSummary
+              barbershop={barbershop}
+              service={booking.service}
+              selectedDate={booking.date}
+            />
+          </div>
 
           <div className="space-y-3">
             {barbershop.phones.map((phone) => (
@@ -201,11 +174,19 @@ export function BookingItem({ booking }: BookingItemProps) {
 
                   <DialogFooter className="flex flex-row gap-3">
                     <DialogClose asChild>
-                      <Button variant="outline" className="w-1/2">Voltar</Button>
+                      <Button variant="outline" className="w-1/2">
+                        Voltar
+                      </Button>
                     </DialogClose>
 
                     <DialogClose asChild>
-                      <Button onClick={handleCancelBooking} variant="destructive" className="w-1/2">Sim, cancelar</Button>
+                      <Button
+                        onClick={handleCancelBooking}
+                        variant="destructive"
+                        className="w-1/2"
+                      >
+                        Sim, cancelar
+                      </Button>
                     </DialogClose>
                   </DialogFooter>
                 </DialogContent>
