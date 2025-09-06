@@ -9,6 +9,9 @@ import { getConcludedBookings } from "../_data/get-concluded-bookings"
 
 export default async function Bookings() {
   const session = await getServerSession(authOptions)
+  const userSessionImage = session?.user?.image ?? ''
+  const userSessionName = session?.user?.name ?? ''
+
   if (!session?.user) {
     return notFound()
   }
@@ -18,7 +21,7 @@ export default async function Bookings() {
 
   return (
     <>
-      <Header />
+      <Header userImage={userSessionImage} userName={userSessionName} />
       <div className="space-y-3 p-5">
         <h1 className="text-xl font-bold">Agendamentos</h1>
 
