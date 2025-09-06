@@ -65,7 +65,7 @@ export function BookingItem({ booking }: BookingItemProps) {
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={handleSheetOpenChange}>
-      <SheetTrigger className="min-w-[90%] p-0">
+      <SheetTrigger className="min-w-[95%] p-0">
         <Card className="w-full">
           <CardContent className="flex justify-between p-0">
             <div className="flex flex-col gap-2 py-5 pl-5">
