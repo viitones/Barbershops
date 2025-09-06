@@ -15,6 +15,11 @@ import { getConfirmedBookings } from "./_data/get-confirmed-bookings"
 
 export default async function Home() {
   const session = await getServerSession(authOptions)
+  const userSessionImage = session?.user?.image
+  const userSessionName = session?.user?.name
+
+  
+  
 
   const barbershops = await db.barbershop.findMany({})
   const popularBarberShops = await db.barbershop.findMany({
@@ -22,12 +27,12 @@ export default async function Home() {
       name: "asc",
     },
   })
-
+''
   const confirmedBookings = await getConfirmedBookings()
 
   return (
     <div>
-      <Header />
+      <Header userImage={userSessionImage ? userSessionImage : ''} userName={userSessionName ? userSessionName : ''} />
       <div className="p-5">
         <h2 className="text-xl font-bold">Olá, {session?.user ? session?.user?.name?.split(" ")[0] : "visitante"}</h2>
         <p>{format(new Date(), "EEEE, dd 'de' MMMM", { locale: ptBR })}</p>
