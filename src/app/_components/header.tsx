@@ -85,6 +85,7 @@ export function Header({ userImage, userName }: HeaderProps) {
                 <Button
                   variant={"ghost"}
                   onClick={handleLogout}
+                  className="cursor-pointer"
                 >
                   <LogOut size={16} />
                   sair

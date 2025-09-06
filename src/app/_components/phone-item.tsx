@@ -23,7 +23,7 @@ export function PhoneItem({ phone }: PhoneItemProps) {
       </div>
 
       <Button
-        variant={"outline"}
+        variant={"ghost"}
         size={"sm"}
         onClick={() => handleCopyPhoneClick(phone)}
       >

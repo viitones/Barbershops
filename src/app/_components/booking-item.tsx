@@ -34,7 +34,7 @@ import {
 } from "./ui/sheet"
 
 // receber agendamento como prop
-interface BookingItemProps {
+export interface BookingItemProps {
   booking: Prisma.BookingGetPayload<{
     include: { service: { include: { barbershop: true } } }
   }>

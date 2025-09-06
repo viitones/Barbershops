@@ -1,7 +1,9 @@
 import { BarbershopItem } from "../_components/barbershop-item"
 import { Header } from "../_components/header"
 import { Search } from "../_components/search"
+import { authOptions } from "../_lib/auth"
 import { db } from "../_lib/prisma"
+import { getServerSession } from "next-auth"
 
 interface BarbershopsPageProps {
   searchParams: Promise<{
@@ -13,6 +15,8 @@ interface BarbershopsPageProps {
 export default async function BarbershopsPage({
   searchParams,
 }: BarbershopsPageProps) {
+  const session = await getServerSession(authOptions)
+
   const searchParamsResolved = await searchParams
 
   const barbershops = await db.barbershop.findMany({
@@ -42,9 +46,10 @@ export default async function BarbershopsPage({
     },
   })
 
+
   return (
     <div className="">
-      <Header />
+      <Header userImage={session?.user?.image ?? ''} userName={session?.user?.name ?? ''} />
       <div className="my-6 px-5">
         <Search />
       </div>
