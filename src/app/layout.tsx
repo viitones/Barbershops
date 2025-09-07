@@ -27,7 +27,7 @@ export default function RootLayout({
         className={`${inter.className} antialiased`}
       >
         <AuthProvider>
-          <div className="flex flex-col h-dvh">
+          <div className="flex flex-col h-lvh">
             <div className="flex-1">{children}</div>
             <Footer />
           </div>

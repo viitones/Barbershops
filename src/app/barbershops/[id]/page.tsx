@@ -48,10 +48,10 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
         )}
       </div>
 
-      <div className="mx-auto max-w-[1440px] gap-10 px-5 md:mt-10 md:flex md:justify-between md:px-0">
+      <div className="sm:mx-auto max-w-[1440px] gap-10 sm:px-5 mt-2 md:mt-10 md:flex sm:justify-between md:px-0">
         <div className="">
           {/* imagem */}
-          <div className="relative h-[250px] w-full">
+          <div className="relative h-[250px] sm:h-[480px] w-full">
             <Image
               fill
               className="rounded-2xl object-cover"
@@ -132,7 +132,7 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
               Serviços
             </h2>
 
-            <div className="space-x-2 md:grid md:grid-cols-1 xl:grid-cols-2 md:gap-3">
+            <div className="space-y-3 md:space-x-2 md:grid md:grid-cols-1 xl:grid-cols-2 md:gap-3">
               {barbershop.services.map((service) => (
                 <ServiceItem
                   key={service.id}

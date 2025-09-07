@@ -5,6 +5,7 @@ import { isPast, isToday, set } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 import { createBooking } from "../_actions/create-booking"
@@ -22,7 +23,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "./ui/sheet"
-import { useRouter } from "next/navigation"
 
 interface ServiceItemProps {
   service: BarbershopService
@@ -143,7 +143,7 @@ export function ServiceItem({ service, barbershop }: ServiceItemProps) {
         action: {
           label: "Ver minhas reservas",
           onClick: () => router.push("/bookings"),
-        }
+        },
       })
     } catch (error) {
       console.log(error)
@@ -246,9 +246,9 @@ export function ServiceItem({ service, barbershop }: ServiceItemProps) {
                     />
                   </div>
 
-                  <div className="grid w-fit grid-cols-3 gap-3 self-center overflow-x-auto p-5 px-5 [&::-webkit-scrollbar]:hidden">
-                    {timeList.length > 0 ? (
-                      timeList.map((time) => (
+                  {timeList.length > 0 && (
+                    <div className="grid w-fit grid-cols-3 gap-3 self-center overflow-x-auto p-5 px-5 [&::-webkit-scrollbar]:hidden">
+                      {timeList.map((time) => (
                         <Button
                           key={time}
                           variant={
@@ -259,9 +259,13 @@ export function ServiceItem({ service, barbershop }: ServiceItemProps) {
                         >
                           {time}
                         </Button>
-                      ))
-                    ) : (
-                      <p className="text-xs">
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="w-full">
+                    {timeList.length <= 0 && (
+                      <p className="text-center text-red-400 p-5">
                         Nenhum horário disponível neste dia.
                       </p>
                     )}
