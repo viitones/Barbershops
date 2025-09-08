@@ -40,18 +40,16 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
   return (
     <>
       <div className="hidden md:block">
-        {session && (
-          <Header
-            userImage={session?.user?.image ?? ""}
-            userName={session?.user?.name ?? ""}
-          />
-        )}
+        <Header
+          userImage={session?.user?.image ?? ""}
+          userName={session?.user?.name ?? ""}
+        />
       </div>
 
-      <div className="sm:mx-auto max-w-[1440px] gap-10 sm:px-5 mt-2 md:mt-10 md:flex sm:justify-between md:px-0">
+      <div className="mt-2 max-w-[1440px] gap-10 sm:mx-auto sm:justify-between sm:px-5 md:mt-10 md:flex md:px-0">
         <div className="">
           {/* imagem */}
-          <div className="relative h-[250px] sm:h-[480px] w-full">
+          <div className="relative h-[250px] w-full sm:h-[480px]">
             <Image
               fill
               className="rounded-2xl object-cover"
@@ -127,12 +125,12 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
           </div>
 
           {/* serviços */}
-          <div className="space-y-3 border-b border-solid md:border-none p-5">
+          <div className="space-y-3 border-b border-solid p-5 md:border-none">
             <h2 className="text-xs font-black text-gray-400 uppercase">
               Serviços
             </h2>
 
-            <div className="space-y-3 md:space-x-2 md:grid md:grid-cols-1 xl:grid-cols-2 md:gap-3">
+            <div className="space-y-3 md:grid md:grid-cols-1 md:gap-3 md:space-x-2 xl:grid-cols-2">
               {barbershop.services.map((service) => (
                 <ServiceItem
                   key={service.id}
@@ -151,7 +149,7 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
           </div>
         </div>
 
-        <div className="hidden max-w-[386px] min-w-[250px] md:block md:mb-8">
+        <div className="hidden max-w-[386px] min-w-[250px] md:mb-8 md:block">
           <Card className="p-5">
             <div className="relative flex h-[180px] w-full items-end">
               <Image
