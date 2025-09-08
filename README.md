@@ -11,11 +11,7 @@ Um aplicativo moderno para agendamento de serviços em barbearias, desenvolvido 
 - [Instalação e Configuração](#instalação-e-configuração)
 - [Configuração do Banco de Dados](#configuração-do-banco-de-dados)
 - [Executando o Projeto](#executando-o-projeto)
-- [Scripts Disponíveis](#scripts-disponíveis)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [API Routes](#api-routes)
 - [Contribuindo](#contribuindo)
-- [Licença](#licença)
 
 ## 🚀 Sobre o Projeto
 
